@@ -1,13 +1,13 @@
 {
   "name": "Video Speed Controller",
   "short_name": "videospeed",
-  "version": "0.6.3.3",
+  "version": "0.7.2",
   "manifest_version": 2,
-  "description": "Speed up, slow down, advance and rewind HTML5 audio/video with shortcuts",
-  "homepage_url": "https://github.com/codebicycle/videospeed",
+  "description": " Speed up, slow down, advance and rewind HTML5 audio/video with shortcuts.\nThe codebicycle fork seems dead, so I forked it again and merged bug fixes from the original Chrome version.",
+  "homepage_url": "https://github.com/gediminasel/videospeed-firefox",
   "browser_specific_settings": {
     "gecko": {
-      "id": "{7be2ba16-0f1e-4d93-9ebc-5164397477a9}"
+      "id": "videospeed-firefox@lelesius.eu"
     }
   },
   "icons": {
