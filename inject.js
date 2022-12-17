@@ -369,6 +369,12 @@ function defineVideoController() {
         // insert before parent to bypass overlay
         this.parent.parentNode.insertBefore(fragment, this.parent.parentNode.firstChild);
         break;
+      case location.hostname == "www.microsoft.com":
+        const msPlayerParent = this.parent.parentNode.parentNode.parentNode;
+        if (msPlayerParent.classList.contains('f-core-player')) {
+          msPlayerParent.insertBefore(fragment, msPlayerParent.firstChild);
+          break;
+        }
       default:
         // Note: when triggered via a MutationRecord, it's possible that the
         // target is not the immediate parent. This appends the controller as
