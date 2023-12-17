@@ -7,7 +7,7 @@
   "homepage_url": "https://github.com/gediminasel/videospeed-firefox",
   "browser_specific_settings": {
     "gecko": {
-      "id": "videospeed-firefox@lelesius.eu"
+      "id": "videospeed-firefox@pleb.ltd"
     }
   },
   "icons": {

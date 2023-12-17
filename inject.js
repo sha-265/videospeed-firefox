@@ -628,7 +628,7 @@ function initializeNow(document) {
 
   function checkForVideo(node, parent, added) {
     // Only proceed with supposed removal if node is missing from DOM
-    if (!added && document.body.contains(node)) {
+    if (!added && document.body?.contains(node)) {
       return;
     }
     if (
@@ -777,7 +777,7 @@ function runAction(action, value, e) {
       } else if (action === "faster") {
         log("Increase speed", 5);
         // Maximum playback speed in Chrome is set to 16:
-        // https://cs.chromium.org/chromium/src/third_party/blink/renderer/core/html/media/html_media_element.cc?gsn=kMinRate&l=166
+        // https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/core/html/media/html_media_element.h;l=117;drc=70155ab40e50115ac8cff6e8f4b7703a7784d854
         var s = Math.min(
           (v.playbackRate < 0.1 ? 0.0 : v.playbackRate) + value,
           16
@@ -786,7 +786,7 @@ function runAction(action, value, e) {
       } else if (action === "slower") {
         log("Decrease speed", 5);
         // Video min rate is 0.0625:
-        // https://cs.chromium.org/chromium/src/third_party/blink/renderer/core/html/media/html_media_element.cc?gsn=kMinRate&l=165
+        // https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/core/html/media/html_media_element.h;l=116;drc=70155ab40e50115ac8cff6e8f4b7703a7784d854
         var s = Math.max(v.playbackRate - value, 0.07);
         setSpeed(v, s);
       } else if (action === "reset") {
