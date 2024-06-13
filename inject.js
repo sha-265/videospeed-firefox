@@ -5,6 +5,7 @@ var tc = {
   settings: {
     lastSpeed: 1.0, // default 1x
     enabled: true, // default enabled
+    shortcuts_enabled: true, // default: true
     speeds: {}, // empty object to hold speed for each source
 
     displayKeyCode: 86, // default: V
@@ -116,6 +117,7 @@ chrome.storage.sync.get(tc.settings, function (storage) {
       audioBoolean: tc.settings.audioBoolean,
       startHidden: tc.settings.startHidden,
       enabled: tc.settings.enabled,
+      shortcuts_enabled: tc.settings.shortcuts_enabled,
       controllerOpacity: tc.settings.controllerOpacity,
       blacklist: tc.settings.blacklist.replace(regStrip, "")
     });
@@ -126,6 +128,7 @@ chrome.storage.sync.get(tc.settings, function (storage) {
   tc.settings.forceLastSavedSpeed = Boolean(storage.forceLastSavedSpeed);
   tc.settings.audioBoolean = Boolean(storage.audioBoolean);
   tc.settings.enabled = Boolean(storage.enabled);
+  tc.settings.shortcuts_enabled = Boolean(storage.shortcuts_enabled);
   tc.settings.startHidden = Boolean(storage.startHidden);
   tc.settings.controllerOpacity = Number(storage.controllerOpacity);
   tc.settings.blacklist = String(storage.blacklist);
@@ -576,8 +579,10 @@ function initializeNow(document) {
   try {
     if (inIframe()) docs.push(window.top.document);
   } catch (e) {}
-
+  
   docs.forEach(function (doc) {
+    if (!tc.settings.shortcuts_enabled) return;
+    
     doc.addEventListener(
       "keydown",
       function (event) {
