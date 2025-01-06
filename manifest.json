@@ -1,9 +1,9 @@
 {
   "name": "Video Speed Controller for Android",
   "short_name": "videospeed",
-  "version": "0.7.6",
-  "manifest_version": 2,
-  "description": " Speed up, slow down, advance and rewind HTML5 audio/video with shortcuts.\nThe codebicycle fork seems dead, so I forked it again and merged bug fixes from the original Chrome version.",
+  "version": "0.7.7",
+  "manifest_version": 3,
+  "description": "Speed up, slow down, advance and rewind HTML5 audio/video with shortcuts.\nThe codebicycle fork seems dead, so I forked it again and merged bug fixes from the original Chrome version.",
   "homepage_url": "https://github.com/sha-265/videospeed-firefox",
   "browser_specific_settings": {
     "gecko": {
@@ -20,7 +20,7 @@
     "page": "options.html",
     "open_in_tab": true
   },
-  "browser_action": {
+  "action": {
     "default_icon": {
       "19": "icons/icon19.png",
       "38": "icons/icon38.png",
@@ -35,7 +35,6 @@
       "match_about_blank": true,
       "exclude_matches": [
         "https://plus.google.com/hangouts/*",
-        "https://www.google.com/flights/*",
         "https://hangouts.google.com/*",
         "https://meet.google.com/*"
       ],
@@ -43,5 +42,8 @@
       "js": ["inject.js"]
     }
   ],
-  "web_accessible_resources": ["inject.css", "shadow.css"]
+  "web_accessible_resources": [{
+    "resources": ["inject.css", "shadow.css"],
+    "matches": ["http://*/*", "https://*/*", "file:///*"]
+  }]
 }
