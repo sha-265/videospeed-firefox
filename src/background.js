@@ -5,7 +5,7 @@
 async function updateIcon(enabled) {
   try {
     const suffix = enabled ? '' : '_disabled';
-    await browser.browserAction.setIcon({
+    await chrome.action.setIcon({
       path: {
         19: `assets/icons/icon19${suffix}.png`,
         38: `assets/icons/icon38${suffix}.png`,
