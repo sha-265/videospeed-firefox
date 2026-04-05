@@ -1,0 +1,955 @@
+/* Material Design Variables - matching popup.css */
+:root {
+  /* Light theme */
+  --md-surface: #ffffff;
+  --md-surface-variant: #f3f3f3;
+  --md-surface-container: #fafafa;
+  --md-on-surface: #1c1b1f;
+  --md-on-surface-variant: #49454f;
+  --md-primary: #6750a4;
+  --md-primary-container: #eaddff;
+  --md-on-primary: #ffffff;
+  --md-on-primary-container: #21005d;
+  --md-outline: #79747e;
+  --md-outline-variant: #cac4d0;
+  --md-shadow: rgba(0, 0, 0, 0.1);
+  --md-shadow-2: rgba(0, 0, 0, 0.15);
+
+  /* Legacy variable mapping */
+  --main-bg-color: var(--md-surface);
+  --main-color: var(--md-on-surface);
+  --bg-shade: var(--md-surface-variant);
+  --color-shade: var(--md-on-surface-variant);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark theme */
+    --md-surface: #131316;
+    --md-surface-variant: #2b2930;
+    --md-surface-container: #1f1f23;
+    --md-on-surface: #e6e0e9;
+    --md-on-surface-variant: #cac4cf;
+    --md-primary: #d0bcff;
+    --md-primary-container: #4f378b;
+    --md-on-primary: #371e73;
+    --md-on-primary-container: #eaddff;
+    --md-outline: #938f99;
+    --md-outline-variant: #49454f;
+    --md-shadow: rgba(0, 0, 0, 0.3);
+    --md-shadow-2: rgba(0, 0, 0, 0.4);
+  }
+
+  a {
+    color: var(--md-primary);
+  }
+
+  a:visited {
+    color: var(--md-primary-container);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  max-width: 720px;
+  padding: 0 1em;
+  margin: auto;
+  line-height: 1.75;
+  font-size: 1em;
+  background-color: var(--md-surface);
+  color: var(--md-on-surface);
+  font-family:
+    'Roboto',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0 20px 40px;
+}
+
+header {
+  margin: 0 -20px 24px;
+  padding: 0 24px;
+  background: var(--md-surface-container);
+  border-bottom: 1px solid var(--md-outline-variant);
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+}
+
+.header-icon {
+  width: 24px;
+  height: 24px;
+  align-self: center;
+  margin-right: 8px;
+}
+
+.header-tabs {
+  display: flex;
+  gap: 0;
+}
+
+.header-tab {
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  color: var(--md-on-surface-variant);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 16px 20px;
+  margin-bottom: -1px;
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+  outline: none;
+}
+
+.header-tab:hover {
+  color: var(--md-on-surface);
+}
+
+.header-tab:focus-visible {
+  color: var(--md-on-surface);
+}
+
+.header-tab.active {
+  color: var(--md-primary);
+  border-bottom-color: var(--md-primary);
+}
+
+/* Split button: [Save | ▾] with dropdown
+ * Global button rule sets: padding 0 24px, min-height 40px, border-radius 20px,
+ * background var(--md-primary), color var(--md-on-primary), overflow hidden.
+ * We override each of those here. */
+.split-button {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  align-self: center;
+}
+
+.split-button button.split-primary,
+.split-button button.split-arrow {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--md-on-surface-variant);
+  border: 1px solid var(--md-outline);
+  min-height: 0;
+  overflow: visible;
+  box-shadow: none !important;
+  transform: none !important;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.split-button button.split-primary:hover,
+.split-button button.split-arrow:hover {
+  background: rgba(76, 175, 80, 0.12) !important;
+  color: #4caf50;
+}
+
+.split-button button.split-primary::before,
+.split-button button.split-arrow::before {
+  display: none;
+}
+
+.split-primary {
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 4px 0 0 4px;
+  border-right: none;
+}
+
+.split-arrow {
+  padding: 0 10px;
+  font-size: 10px;
+  border-radius: 0 4px 4px 0;
+  display: flex;
+  align-items: center;
+}
+
+.split-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  background: var(--md-surface-container);
+  border: 1px solid var(--md-outline-variant);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px var(--md-shadow-2);
+  z-index: 100;
+  min-width: 120px;
+  overflow: hidden;
+}
+
+.split-dropdown button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 14px;
+  font-size: 13px;
+  background: none;
+  border: none;
+  border-radius: 0;
+  color: var(--md-on-surface);
+  cursor: pointer;
+}
+
+.split-dropdown button:hover {
+  background: var(--md-surface-variant);
+}
+
+.split-dropdown button::before {
+  display: none;
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 32px 0 16px;
+  color: var(--md-on-surface);
+}
+
+section {
+  margin: 0 0 32px;
+}
+
+/* Material Design form elements */
+.row {
+  margin: 20px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+/* First row after heading should have less top margin */
+h3 + .row {
+  margin-top: 8px;
+}
+
+.row.customs {
+  gap: 8px;
+  align-items: center;
+  display: grid;
+  grid-template-columns: 180px auto 75px auto;
+  justify-content: start;
+  margin: 10px 0;
+  padding-left: 0;
+}
+
+/* Special handling for rows without value inputs */
+.row.customs:has(input[style*='display: none']) {
+  grid-template-columns: 180px auto 0;
+}
+
+.row.customs:has(input[style*='display: none']) .customValue {
+  width: 0;
+  padding: 0;
+  border: none;
+  margin: 0;
+}
+
+/* Remove button styling */
+.removeParent {
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  min-height: 32px;
+  padding: 0;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 16px;
+  background-color: var(--md-surface-variant);
+  color: var(--md-on-surface);
+  border: 1px solid var(--md-outline-variant);
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hide remove button for predefined shortcuts */
+.row.customs[id] .removeParent {
+  display: none;
+}
+
+/* Style disabled selects consistently */
+select:disabled {
+  opacity: 0.8;
+  background-color: var(--md-surface-variant);
+  cursor: default;
+}
+
+select:disabled:hover {
+  border-color: var(--md-outline);
+  background-color: var(--md-surface-variant);
+}
+
+.removeParent:hover {
+  background-color: #ffebee;
+  color: #d32f2f;
+  border-color: #d32f2f;
+  box-shadow: 0 2px 4px var(--md-shadow);
+}
+
+@media (prefers-color-scheme: dark) {
+  .removeParent:hover {
+    background-color: rgba(211, 47, 47, 0.15);
+    color: #ef5350;
+    border-color: #ef5350;
+  }
+}
+
+.removeParent:active {
+  box-shadow: 0 1px 2px var(--md-shadow);
+}
+
+.removeParent:focus-visible {
+  outline: 2px solid var(--md-primary);
+  outline-offset: 2px;
+}
+
+/* Improved label styling with context */
+label {
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--md-on-surface);
+  font-weight: 500;
+}
+
+label em {
+  display: block;
+  font-size: 12px;
+  color: var(--md-on-surface-variant);
+  font-weight: 400;
+  margin-top: 2px;
+  font-style: normal;
+}
+
+/* Material Design text inputs */
+input[type='text'],
+input[type='number'] {
+  padding: 8px 12px;
+  border: 1px solid var(--md-outline);
+  border-radius: 4px;
+  background-color: var(--md-surface);
+  color: var(--md-on-surface);
+  font-size: 14px;
+  transition: all 0.2s ease;
+  min-height: 32px;
+  width: 75px;
+  text-align: center;
+}
+
+/* Custom key input styling */
+.customKey {
+  color: transparent;
+  text-shadow: 0 0 0 var(--md-on-surface);
+  width: 75px;
+  min-width: 75px;
+}
+
+/* Specific input widths */
+#controllerOpacity,
+#controllerButtonSize {
+  width: 60px;
+}
+
+input[type='text']:hover,
+input[type='number']:hover {
+  border-color: var(--md-on-surface);
+}
+
+input[type='text']:focus,
+input[type='number']:focus {
+  outline: none;
+  border-color: var(--md-primary);
+  box-shadow: 0 0 0 1px var(--md-primary);
+}
+
+input::placeholder {
+  opacity: 0.7;
+  color: var(--md-on-surface-variant);
+}
+
+input:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+  background-color: var(--md-surface-variant);
+}
+
+input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--md-primary);
+}
+
+/* Material Design textarea */
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--md-outline);
+  border-radius: 4px;
+  background-color: var(--md-surface);
+  color: var(--md-on-surface);
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  transition: all 0.2s ease;
+}
+
+textarea:hover {
+  border-color: var(--md-on-surface);
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--md-primary);
+  box-shadow: 0 0 0 1px var(--md-primary);
+}
+
+/* Customizable select styling */
+select {
+  appearance: none;
+  padding: 8px 32px 8px 12px;
+  border: 1px solid var(--md-outline);
+  border-radius: 4px;
+  background-color: var(--md-surface);
+  color: var(--md-on-surface);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 32px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%2349454f' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+  background-size: 18px;
+}
+
+@media (prefers-color-scheme: dark) {
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23cac4cf' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  }
+}
+
+select:hover {
+  border-color: var(--md-on-surface);
+  background-color: var(--md-surface-variant);
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--md-primary);
+  box-shadow: 0 0 0 1px var(--md-primary);
+}
+
+/* Specific select widths */
+.customDo {
+  width: 180px;
+}
+
+@media (prefers-color-scheme: dark) {
+}
+
+#logLevel {
+  width: 120px;
+}
+
+/* Material Design buttons */
+button {
+  appearance: none;
+  padding: 0 24px;
+  min-height: 32px;
+  border: none;
+  border-radius: 20px;
+  background-color: var(--md-primary);
+  color: var(--md-on-primary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+button:hover {
+  box-shadow: 0 2px 4px var(--md-shadow);
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 1px 2px var(--md-shadow);
+}
+
+button:focus-visible {
+  outline: 2px solid var(--md-primary);
+  outline-offset: 2px;
+}
+
+/* Secondary buttons */
+.secondary {
+  background-color: transparent;
+  color: var(--md-primary);
+  border: 1px solid var(--md-outline);
+}
+
+.secondary:hover {
+  background-color: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+  border-color: var(--md-primary);
+}
+
+/* Specific button styling */
+#save {
+  background-color: var(--md-primary);
+  transition:
+    background-color 0.25s ease,
+    opacity 0.25s ease;
+}
+
+/* !important needed to override .split-button button.split-primary's !important transparent */
+.split-button button#save.has-changes {
+  background-color: rgba(76, 175, 80, 0.15) !important;
+  color: #4caf50 !important;
+  border-color: #4caf50 !important;
+}
+
+.split-button button#save.saved {
+  opacity: 0.6 !important;
+  pointer-events: none;
+}
+
+#experimental {
+  background-color: var(--md-surface-variant);
+  color: var(--md-on-surface);
+}
+
+#experimental:hover {
+  background-color: var(--md-outline-variant);
+}
+
+#restore {
+  background-color: transparent;
+  color: var(--md-on-surface-variant);
+  border: 1px solid var(--md-outline-variant);
+}
+
+#restore:hover {
+  background-color: rgba(234, 67, 53, 0.08);
+  color: #d32f2f;
+  border-color: #d32f2f;
+}
+
+@media (prefers-color-scheme: dark) {
+  #restore:hover {
+    background-color: rgba(244, 67, 54, 0.12);
+    color: #ef5350;
+    border-color: #ef5350;
+  }
+}
+
+#experimental:disabled {
+  background-color: rgba(255, 193, 7, 0.15);
+  color: var(--md-on-surface);
+  opacity: 1;
+  cursor: default;
+}
+
+#experimental:disabled:hover {
+  background-color: rgba(255, 193, 7, 0.15);
+  transform: none;
+}
+
+#add {
+  margin-top: 16px;
+  margin-left: 0;
+  padding: 0 16px;
+  min-height: 36px;
+  font-size: 14px;
+}
+
+/* Button group layout (legacy — kept for status bar spacing) */
+.button-group {
+  display: none;
+  margin-top: 24px;
+  gap: 16px;
+}
+
+.primary-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.secondary-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+/* Status message — collapsed when empty, expands for errors */
+#status {
+  display: none;
+  margin-top: 16px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#status.show {
+  display: block;
+}
+
+/* Error state */
+#status.error {
+  background-color: #f44336;
+  color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  #status {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  #status.error {
+    background-color: #d32f2f;
+  }
+}
+
+/* Site rules table */
+.row:has(#site-rules-container) {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.row:has(#site-rules-container) label {
+  flex: none;
+}
+
+.site-rules-header {
+  display: grid;
+  grid-template-columns: 1fr 50px 80px 32px;
+  gap: 8px;
+  padding-left: 0;
+  padding-bottom: 4px;
+  font-size: 12px;
+  color: var(--md-on-surface-variant);
+  font-weight: 500;
+  border-bottom: 1px solid var(--md-outline-variant);
+  margin-bottom: 4px;
+}
+
+.site-rules-header span:nth-child(2),
+.site-rules-header span:nth-child(3) {
+  text-align: center;
+}
+
+.row.site-rule {
+  display: grid;
+  grid-template-columns: 1fr 50px 80px 32px;
+  gap: 8px;
+  align-items: center;
+  padding-left: 0;
+  position: relative;
+  margin: 4px 0;
+}
+
+.row.site-rule .rulePattern {
+  width: 100%;
+  text-align: left;
+}
+
+.row.site-rule .ruleDisabled {
+  justify-self: center;
+}
+
+.row.site-rule .ruleSpeed {
+  width: 80px;
+  text-align: center;
+}
+
+#add-site-rule {
+  margin-top: 8px;
+  margin-left: 0;
+  padding: 0 16px;
+  min-height: 36px;
+  font-size: 14px;
+}
+
+/* Controller CSS textarea */
+.row:has(#controllerCSS) {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.row:has(#controllerCSS) label {
+  flex: none;
+}
+
+#resetCSS {
+  font-size: inherit;
+}
+
+/* Syntax-highlighted CSS editor: transparent textarea over colored <pre> */
+.css-editor {
+  position: relative;
+  width: 100%;
+}
+
+.css-editor textarea,
+.css-editor .css-highlight {
+  font-family: 'Menlo', 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  tab-size: 2;
+  white-space: pre;
+  overflow-wrap: normal;
+  word-wrap: normal;
+  margin: 0;
+  padding: 12px 16px;
+  border: 1px solid var(--md-outline);
+  border-radius: 12px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.css-editor textarea {
+  display: block;
+  position: relative;
+  z-index: 1;
+  color: transparent;
+  caret-color: var(--md-on-surface);
+  background: transparent;
+  resize: vertical;
+  overflow: auto;
+  transition: border-color 0.2s;
+}
+
+.css-editor .css-highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: var(--md-surface-container);
+  color: var(--md-on-surface);
+  border-color: transparent;
+}
+
+/* Syntax token colors */
+.css-highlight .css-comment {
+  color: #6a9955;
+}
+.css-highlight .css-selector {
+  color: #d7ba7d;
+}
+.css-highlight .css-property {
+  color: #9cdcfe;
+}
+.css-highlight .css-value {
+  color: #ce9178;
+}
+.css-highlight .css-brace {
+  color: #808080;
+}
+
+@media (prefers-color-scheme: light) {
+  .css-highlight .css-comment {
+    color: #008000;
+  }
+  .css-highlight .css-selector {
+    color: #800000;
+  }
+  .css-highlight .css-property {
+    color: #0451a5;
+  }
+  .css-highlight .css-value {
+    color: #a31515;
+  }
+  .css-highlight .css-brace {
+    color: #333;
+  }
+}
+
+.css-editor textarea.css-error {
+  border-color: #d32f2f;
+}
+.css-editor textarea.css-warn {
+  border-color: #f57c00;
+}
+
+.css-validation {
+  font-size: 12px;
+}
+.css-validation.error {
+  color: #d32f2f;
+}
+.css-validation.warn {
+  color: #f57c00;
+}
+
+#panel-faq section {
+  margin-top: 0;
+}
+
+/* FAQ table of contents */
+.faq-toc {
+  margin: 0 0 12px;
+  padding-left: 20px;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.faq-toc a {
+  color: var(--md-primary);
+  text-decoration: none;
+}
+
+.faq-toc a:hover {
+  text-decoration: underline;
+}
+
+#faq hr {
+  border: none;
+  border-top: 1px solid var(--md-outline-variant);
+  margin: 0 0 16px;
+}
+
+/* FAQ section */
+#faq {
+  margin-top: 0;
+  padding: 16px 24px;
+  background-color: var(--md-surface-variant);
+  border-radius: 12px;
+}
+
+#faq h4 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--md-on-surface);
+}
+
+#faq p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: var(--md-on-surface-variant);
+}
+
+#faq code {
+  padding: 2px 6px;
+  background-color: var(--md-surface);
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--md-primary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .row.customs {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+  }
+
+  .row.customs > * {
+    margin-bottom: 8px;
+  }
+
+  label {
+    flex: none;
+  }
+
+  select,
+  input[type='text'] {
+    width: 100%;
+  }
+
+  .customDo {
+    width: 100%;
+  }
+
+  .site-rules-header {
+    grid-template-columns: 1fr 50px 70px 32px;
+    padding-left: 0;
+    font-size: 11px;
+  }
+
+  .row.site-rule {
+    grid-template-columns: 1fr 50px 70px 32px;
+  }
+
+  .row.site-rule .ruleSpeed {
+    width: 70px;
+  }
+
+  .button-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .primary-buttons {
+    width: 100%;
+  }
+
+  .primary-buttons button {
+    flex: 1;
+  }
+
+  .secondary-buttons {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .secondary-buttons button {
+    flex: 1;
+  }
+}
+
+/* Ripple effect for buttons */
+button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: currentColor;
+  opacity: 0.1;
+  transform: translate(-50%, -50%);
+  transition:
+    width 0.6s,
+    height 0.6s;
+}
+
+button:active::before {
+  width: 300px;
+  height: 300px;
+}

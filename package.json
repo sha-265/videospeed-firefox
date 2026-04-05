@@ -1,5 +1,60 @@
 {
+  "name": "video-speed-controller",
+  "version": "0.10.0",
+  "description": "Speed up, slow down, advance and rewind HTML5 audio/video with shortcuts",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/build.mjs --watch",
+    "prebuild": "node scripts/clean.mjs dist",
+    "test": "vitest run",
+    "test:unit": "vitest run tests/unit/",
+    "test:integration": "vitest run tests/integration/",
+    "test:e2e": "npm run build && node tests/e2e/run-e2e.js",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "serve": "python3 -m http.server 8000",
+    "lint": "eslint 'src/**/*.js' 'tests/**/*.js'",
+    "lint:fix": "eslint 'src/**/*.js' 'tests/**/*.js' --fix",
+    "format": "prettier --write 'src/**/*.js' 'tests/**/*.js'",
+    "build:release": "RELEASE=1 node scripts/build.mjs",
+    "prerelease": "npm run clean && npm test",
+    "release": "npm run build:release && node scripts/package-release.js",
+    "release:github": "node scripts/github-release.js",
+    "clean": "node scripts/clean.mjs dist release",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css,html}": [
+      "prettier --write"
+    ]
+  },
   "devDependencies": {
-    "cws-publish": "^2.1.1"
+    "archiver": "^7.0.1",
+    "@eslint/js": "^10.0.1",
+    "esbuild": "^0.27.4",
+    "eslint": "^10.1.0",
+    "fs-extra": "^11.2.0",
+    "globals": "^17.4.0",
+    "husky": "^9.1.7",
+    "jsdom": "^29.0.1",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.1.0",
+    "puppeteer": "^24.10.2",
+    "vitest": "^4.1.1"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "semi": true,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "printWidth": 100
   }
 }

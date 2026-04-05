@@ -1,7 +1,7 @@
 {
   "name": "Video Speed Controller for Android",
   "short_name": "videospeed",
-  "version": "0.7.7",
+  "version": "0.10.0",
   "manifest_version": 3,
   "description": "Speed up, slow down, advance and rewind HTML5 audio/video with shortcuts.\nThe codebicycle fork seems dead, so I forked it again and merged bug fixes from the original Chrome version.",
   "homepage_url": "https://github.com/sha-265/videospeed-firefox",
@@ -11,39 +11,45 @@
     }
   },
   "icons": {
-    "16": "icons/icon16.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
   },
   "permissions": ["storage"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "options_ui": {
-    "page": "options.html",
+    "page": "ui/options/options.html",
     "open_in_tab": true
   },
   "action": {
     "default_icon": {
-      "19": "icons/icon19.png",
-      "38": "icons/icon38.png",
-      "48": "icons/icon48.png"
+      "19": "assets/icons/icon19.png",
+      "38": "assets/icons/icon38.png",
+      "48": "assets/icons/icon48.png"
     },
-    "default_popup": "popup.html"
+    "default_popup": "ui/popup/popup.html"
   },
   "content_scripts": [
     {
-      "all_frames": true,
       "matches": ["http://*/*", "https://*/*", "file:///*"],
+      "all_frames": true,
       "match_about_blank": true,
-      "exclude_matches": [
-        "https://plus.google.com/hangouts/*",
-        "https://hangouts.google.com/*",
-        "https://meet.google.com/*"
-      ],
-      "css": ["inject.css"],
-      "js": ["inject.js"]
+      "exclude_matches": ["https://hangouts.google.com/*", "https://meet.google.com/*"],
+      "js": ["content-bridge.js"],
+      "run_at": "document_start",
+      "world": "ISOLATED"
+    },
+    {
+      "matches": ["http://*/*", "https://*/*", "file:///*"],
+      "all_frames": true,
+      "match_about_blank": true,
+      "exclude_matches": ["https://hangouts.google.com/*", "https://meet.google.com/*"],
+      "css": ["styles/inject.css"],
+      "js": ["inject.js"],
+      "run_at": "document_idle",
+      "world": "MAIN"
     }
-  ],
-  "web_accessible_resources": [{
-    "resources": ["inject.css", "shadow.css", "scriptforsite/*.js"],
-    "matches": ["http://*/*", "https://*/*", "file:///*"]
-  }]
+  ]
 }

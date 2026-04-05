@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build-and-test:
+    name: Lint, Build, Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22.x]
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - run: npm ci
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: '1'
+      - run: npm audit --audit-level=high
+      - run: npm run lint
+      - run: npm run build:release
+      - run: npm test
+      - run: node scripts/package-release.js
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: videospeed-release-node-${{ matrix.node-version }}
+          path: release/videospeed-*.zip
+          retention-days: 7

@@ -1,0 +1,280 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Video Speed Controller: Options</title>
+    <link rel="stylesheet" href="options.css" />
+    <script src="options.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+
+  <body>
+    <header>
+      <nav class="header-tabs">
+        <img src="../../assets/icons/icon48.png" alt="" class="header-icon" />
+        <button id="tab-settings" class="header-tab active">Settings</button>
+        <button id="tab-advanced" class="header-tab">Advanced</button>
+        <button id="tab-faq" class="header-tab">FAQ</button>
+      </nav>
+      <div class="split-button">
+        <button id="save" class="split-primary">Save</button>
+        <button id="split-toggle" class="split-arrow" aria-label="More actions">&#9662;</button>
+        <div id="split-menu" class="split-dropdown" hidden>
+          <button id="import">Import</button>
+          <button id="export">Export</button>
+          <button id="restore">Reset</button>
+        </div>
+        <input type="file" id="importFile" accept=".json" hidden />
+      </div>
+    </header>
+
+    <!-- ============ SETTINGS TAB ============ -->
+    <div id="panel-settings">
+      <section id="customs">
+        <h3>Shortcuts</h3>
+        <div id="shortcuts-container"></div>
+        <button id="add">Add New</button>
+      </section>
+
+      <section>
+        <h3>Preferences</h3>
+        <div class="row">
+          <label for="audioBoolean"
+            >Audio support<br />
+            <em>Show speed controls on audio elements.</em></label
+          >
+          <input id="audioBoolean" type="checkbox" />
+        </div>
+        <div class="row">
+          <label for="rememberSpeed"
+            >Remember playback speed<br />
+            <em>Store and auto-apply the last used speed to all new videos.</em></label
+          >
+          <input id="rememberSpeed" type="checkbox" />
+        </div>
+        <div class="row">
+          <label for="startHidden"
+            >Hide controller by default<br />
+            <em>Controller stays hidden until toggled via shortcut.</em></label
+          >
+          <input id="startHidden" type="checkbox" />
+        </div>
+        <div class="row">
+          <label for="exclusiveKeys"
+            >Exclusive keyboard shortcuts<br />
+            <em>When possible, prevent websites from also handling VSC shortcut keys.</em></label
+          >
+          <input id="exclusiveKeys" type="checkbox" />
+        </div>
+      </section>
+    </div>
+
+    <!-- ============ ADVANCED TAB ============ -->
+    <div id="panel-advanced" style="display: none">
+      <section>
+        <div class="row">
+          <label for="controllerOpacity"
+            >Controller opacity<br />
+            <em>0 = fully transparent, 1 = fully opaque. Default: 0.3</em>
+          </label>
+          <input id="controllerOpacity" type="text" value="" />
+        </div>
+        <div class="row">
+          <label for="controllerButtonSize"
+            >Controller button size<br />
+            <em>Font size in pixels for the speed display and buttons. Default: 14</em>
+          </label>
+          <input id="controllerButtonSize" type="text" value="" />
+        </div>
+        <div class="row">
+          <label for="logLevel"
+            >Console Log Level<br />
+            <em>Set verbosity in the browser console</em></label
+          >
+          <select id="logLevel">
+            <option value="1">None</option>
+            <option value="2">Error</option>
+            <option value="3">Warning</option>
+            <option value="4">Info</option>
+            <option value="5">Debug</option>
+            <option value="6">Verbose</option>
+          </select>
+        </div>
+        <div class="row">
+          <label
+            >Site rules<br />
+            <em
+              >Per-site overrides. Use a domain or
+              <a href="https://www.regexpal.com/">regex</a> (e.g. <code>/\.edu$/i</code>). Check
+              "Disable" to turn off the extension on that site. Set a speed to override the
+              default.</em
+            >
+          </label>
+          <div id="site-rules-container">
+            <div class="site-rules-header">
+              <span>Pattern</span>
+              <span>Disable</span>
+              <span>Speed</span>
+            </div>
+          </div>
+          <button id="add-site-rule">Add Site Rule</button>
+          <div id="siteRulesValidation" class="css-validation"></div>
+        </div>
+        <div class="row">
+          <label for="controllerCSS"
+            >Controller CSS<br />
+            <em
+              >Customize controller positioning per site.
+              <a href="#" id="resetCSS">Reset to defaults</a>.</em
+            >
+          </label>
+          <div class="css-editor">
+            <pre id="cssHighlight" class="css-highlight" aria-hidden="true"></pre>
+            <textarea id="controllerCSS" rows="30" spellcheck="false"></textarea>
+          </div>
+          <div id="cssValidation" class="css-validation"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- status bar -->
+
+    <div id="status"></div>
+
+    <!-- ============ FAQ TAB ============ -->
+    <div id="panel-faq" style="display: none">
+      <section>
+        <div id="faq">
+          <ul class="faq-toc">
+            <li><a href="#faq-local">Local files / Incognito</a></li>
+            <li><a href="#faq-disable">Disable on a site</a></li>
+            <li><a href="#faq-site-speed">Default speed per site</a></li>
+            <li><a href="#faq-remember">Remember speed</a></li>
+            <li><a href="#faq-keys">Shortcut conflicts</a></li>
+            <li><a href="#faq-position">Controller positioning</a></li>
+            <li><a href="#faq-missing">Controller not showing</a></li>
+            <li><a href="#faq-spa">Speed resets on navigate</a></li>
+            <li><a href="#faq-audio">Audio support</a></li>
+          </ul>
+          <hr />
+
+          <h4 id="faq-local">
+            The speed controls are not showing up for local videos or Incognito mode?
+          </h4>
+          <p>
+            To enable playback of local media (e.g. File &gt; Open File) or Incognito mode, you need
+            to manually grant additional permissions to the extension.
+          </p>
+          <ul>
+            <li>In a new tab, navigate to <code>chrome://extensions</code></li>
+            <li>
+              Find "Video Speed Controller" extension in the list and enable "Allow access to file
+              URLs" and/or "Allow in Incognito".
+            </li>
+          </ul>
+
+          <h4 id="faq-disable">How do I disable the extension on a specific site?</h4>
+          <p>
+            Go to <strong>Advanced &gt; Site rules</strong> and add a rule with the site's domain
+            (e.g. <code>example.com</code>). Check the <strong>Disable</strong> checkbox. The
+            extension will not inject on that site. You can also use regex patterns like
+            <code>/\.edu$/i</code> to match multiple domains.
+          </p>
+
+          <h4 id="faq-site-speed">How do I set a default speed for a specific site?</h4>
+          <p>
+            In <strong>Advanced &gt; Site rules</strong>, add a rule with the site's domain and set
+            the <strong>Speed</strong> field to your desired value (e.g. <code>2</code> for 2x).
+            Leave the Disable checkbox unchecked. Every new video on that site will start at that
+            speed.
+          </p>
+
+          <h4 id="faq-remember">How does "Remember playback speed" interact with site rules?</h4>
+          <p>
+            When <code>rememberSpeed</code> is <strong>off</strong> (default), each page load starts
+            at 1x &mdash; or the site rule speed if one matches. Your in-session speed changes apply
+            to all new videos but are forgotten on page reload.
+          </p>
+          <p>
+            When <code>rememberSpeed</code> is <strong>on</strong>, the last speed you set is stored
+            and persists across sessions. This stored speed <strong>takes precedence</strong> over
+            site rule defaults. To let a site rule win again, either turn off
+            <code>rememberSpeed</code> or manually reset to 1x.
+          </p>
+
+          <h4 id="faq-keys">A site's keyboard shortcuts conflict with mine. What can I do?</h4>
+          <p>Three options:</p>
+          <ul>
+            <li>
+              <strong>Add a modifier:</strong> In Settings &gt; Shortcuts, add <code>Shift</code>,
+              <code>Ctrl</code>, or <code>Alt</code> to your shortcut keys to create chord
+              combinations the site won't intercept.
+            </li>
+            <li>
+              <strong>Rebind to unused keys:</strong> Change the default key to one the site doesn't
+              use.
+            </li>
+            <li>
+              <strong>Enable exclusive mode:</strong> Turn on
+              <code>Exclusive keyboard shortcuts</code> in Preferences to prevent sites from also
+              handling your VSC shortcut keys.
+            </li>
+          </ul>
+
+          <h4 id="faq-position">
+            The controller overlaps with site controls. How do I reposition it?
+          </h4>
+          <p>
+            Go to <strong>Advanced &gt; Controller CSS</strong>. Add a domain rule targeting
+            <code>vsc-controller</code> using the <code>--vsc-domain</code> CSS variable. Example:
+          </p>
+          <p>
+            <code
+              >:root[style*='--vsc-domain: "example.com"'] vsc-controller { position: relative; top:
+              60px; }</code
+            >
+          </p>
+          <p>
+            You can also drag the controller to a new position on any page. See the existing rules
+            for YouTube, Netflix, etc. as reference.
+          </p>
+
+          <h4 id="faq-missing">The controller is not appearing on a site. Why?</h4>
+          <p>Common causes:</p>
+          <ul>
+            <li>
+              The site is in your <strong>Site rules</strong> with Disable checked &mdash; remove or
+              uncheck it.
+            </li>
+            <li>
+              The site uses Flash or a non-HTML5 player &mdash; the extension only works with native
+              <code>&lt;video&gt;</code> and <code>&lt;audio&gt;</code> elements.
+            </li>
+            <li>
+              <code>Hide controller by default</code> is enabled &mdash; press your display toggle
+              shortcut (default: <code>V</code>) to show it.
+            </li>
+          </ul>
+
+          <h4 id="faq-spa">Speed resets when I navigate on YouTube or similar single-page apps?</h4>
+          <p>
+            YouTube uses SPA navigation &mdash; the page doesn't fully reload, but the player may
+            reinitialize. The extension restores speed from the in-session value automatically. If
+            speed still resets, enable <code>rememberSpeed</code> in Preferences to persist speed
+            across navigations and sessions.
+          </p>
+
+          <h4 id="faq-audio">Does this work with audio elements, not just video?</h4>
+          <p>
+            Yes. When <code>Audio support</code> is enabled in Preferences (on by default), the
+            controller appears on <code>&lt;audio&gt;</code> elements too. All speed controls and
+            keyboard shortcuts work identically for audio.
+          </p>
+        </div>
+        <div class="row">
+          <button id="about" class="secondary">About Video Speed Controller</button>
+          <button id="feedback" class="secondary">Send Feedback</button>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
