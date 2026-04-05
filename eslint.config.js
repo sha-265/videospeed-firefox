@@ -12,6 +12,7 @@ export default [
         ...globals.node,
         ...globals.webextensions,
         chrome: 'readonly',
+        cloneInto: 'readonly',
       },
     },
     rules: {
