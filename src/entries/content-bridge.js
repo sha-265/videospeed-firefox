@@ -111,7 +111,9 @@ async function init() {
 
     // --- Ongoing: popup/background message relay ---
     chrome.runtime.onMessage.addListener((request) => {
-      docEl.dispatchEvent(new CustomEvent('VSC_MESSAGE', { detail: request }));
+      docEl.dispatchEvent(
+        new CustomEvent('VSC_MESSAGE', { detail: cloneInto({ ...request }, window) })
+      );
     });
 
     // --- Ongoing: speed write-back from MAIN world ---
