@@ -170,6 +170,7 @@ export function displayKeyFromCode(code) {
   }
   // Numpad operators
   const numpadOps = {
+    NumpadEnter: 'Num Enter',
     NumpadMultiply: 'Num *',
     NumpadAdd: 'Num +',
     NumpadSubtract: 'Num -',

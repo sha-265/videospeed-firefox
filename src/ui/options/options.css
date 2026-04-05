@@ -77,6 +77,9 @@ body {
 }
 
 header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   margin: 0 -20px 24px;
   padding: 0 24px;
   background: var(--md-surface-container);
@@ -239,14 +242,18 @@ h3 + .row {
   margin-top: 8px;
 }
 
-.row.customs {
+.row.customs,
+.row.site-rule {
+  display: grid;
   gap: 8px;
   align-items: center;
-  display: grid;
-  grid-template-columns: 180px auto 75px auto;
+  padding-left: 0;
+}
+
+.row.customs {
+  grid-template-columns: 180px auto 75px 32px;
   justify-content: start;
   margin: 10px 0;
-  padding-left: 0;
 }
 
 /* Special handling for rows without value inputs */
@@ -286,16 +293,8 @@ h3 + .row {
   display: none;
 }
 
-/* Style disabled selects consistently */
-select:disabled {
-  opacity: 0.8;
-  background-color: var(--md-surface-variant);
-  cursor: default;
-}
-
 select:disabled:hover {
   border-color: var(--md-outline);
-  background-color: var(--md-surface-variant);
 }
 
 .removeParent:hover {
@@ -317,7 +316,9 @@ select:disabled:hover {
   box-shadow: 0 1px 2px var(--md-shadow);
 }
 
-.removeParent:focus-visible {
+/* Shared focus ring */
+.removeParent:focus-visible,
+button:focus-visible {
   outline: 2px solid var(--md-primary);
   outline-offset: 2px;
 }
@@ -340,16 +341,39 @@ label em {
   font-style: normal;
 }
 
-/* Material Design text inputs */
+/* Shared base styles for all form controls */
 input[type='text'],
-input[type='number'] {
-  padding: 8px 12px;
+input[type='number'],
+textarea,
+select {
   border: 1px solid var(--md-outline);
   border-radius: 4px;
   background-color: var(--md-surface);
   color: var(--md-on-surface);
   font-size: 14px;
   transition: all 0.2s ease;
+}
+
+input[type='text']:hover,
+input[type='number']:hover,
+textarea:hover,
+select:hover {
+  border-color: var(--md-on-surface);
+}
+
+input[type='text']:focus,
+input[type='number']:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--md-primary);
+  box-shadow: 0 0 0 1px var(--md-primary);
+}
+
+/* Material Design text inputs */
+input[type='text'],
+input[type='number'] {
+  padding: 8px 12px;
   min-height: 32px;
   width: 75px;
   text-align: center;
@@ -369,24 +393,13 @@ input[type='number'] {
   width: 60px;
 }
 
-input[type='text']:hover,
-input[type='number']:hover {
-  border-color: var(--md-on-surface);
-}
-
-input[type='text']:focus,
-input[type='number']:focus {
-  outline: none;
-  border-color: var(--md-primary);
-  box-shadow: 0 0 0 1px var(--md-primary);
-}
-
 input::placeholder {
   opacity: 0.7;
   color: var(--md-on-surface-variant);
 }
 
-input:disabled {
+input:disabled,
+select:disabled {
   cursor: not-allowed;
   opacity: 0.7;
   background-color: var(--md-surface-variant);
@@ -403,37 +416,16 @@ input[type='checkbox'] {
 textarea {
   width: 100%;
   padding: 12px;
-  border: 1px solid var(--md-outline);
-  border-radius: 4px;
-  background-color: var(--md-surface);
-  color: var(--md-on-surface);
-  font-size: 14px;
   font-family: inherit;
   resize: vertical;
-  transition: all 0.2s ease;
-}
-
-textarea:hover {
-  border-color: var(--md-on-surface);
-}
-
-textarea:focus {
-  outline: none;
-  border-color: var(--md-primary);
-  box-shadow: 0 0 0 1px var(--md-primary);
 }
 
 /* Customizable select styling */
 select {
   appearance: none;
   padding: 8px 32px 8px 12px;
-  border: 1px solid var(--md-outline);
-  border-radius: 4px;
-  background-color: var(--md-surface);
-  color: var(--md-on-surface);
   font-size: 13px;
   cursor: pointer;
-  transition: all 0.2s ease;
   min-height: 32px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%2349454f' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -448,22 +440,12 @@ select {
 }
 
 select:hover {
-  border-color: var(--md-on-surface);
   background-color: var(--md-surface-variant);
-}
-
-select:focus {
-  outline: none;
-  border-color: var(--md-primary);
-  box-shadow: 0 0 0 1px var(--md-primary);
 }
 
 /* Specific select widths */
 .customDo {
   width: 180px;
-}
-
-@media (prefers-color-scheme: dark) {
 }
 
 #logLevel {
@@ -497,11 +479,6 @@ button:active {
   box-shadow: 0 1px 2px var(--md-shadow);
 }
 
-button:focus-visible {
-  outline: 2px solid var(--md-primary);
-  outline-offset: 2px;
-}
-
 /* Secondary buttons */
 .secondary {
   background-color: transparent;
@@ -517,7 +494,6 @@ button:focus-visible {
 
 /* Specific button styling */
 #save {
-  background-color: var(--md-primary);
   transition:
     background-color 0.25s ease,
     opacity 0.25s ease;
@@ -533,15 +509,6 @@ button:focus-visible {
 .split-button button#save.saved {
   opacity: 0.6 !important;
   pointer-events: none;
-}
-
-#experimental {
-  background-color: var(--md-surface-variant);
-  color: var(--md-on-surface);
-}
-
-#experimental:hover {
-  background-color: var(--md-outline-variant);
 }
 
 #restore {
@@ -562,18 +529,6 @@ button:focus-visible {
     color: #ef5350;
     border-color: #ef5350;
   }
-}
-
-#experimental:disabled {
-  background-color: rgba(255, 193, 7, 0.15);
-  color: var(--md-on-surface);
-  opacity: 1;
-  cursor: default;
-}
-
-#experimental:disabled:hover {
-  background-color: rgba(255, 193, 7, 0.15);
-  transform: none;
 }
 
 #add {
@@ -633,7 +588,7 @@ button:focus-visible {
   }
 }
 
-/* Site rules table */
+/* Site rules table — header and rows share the same column template */
 .row:has(#site-rules-container) {
   flex-direction: column;
   gap: 8px;
@@ -643,9 +598,13 @@ button:focus-visible {
   flex: none;
 }
 
+.site-rules-header,
+.row.site-rule {
+  grid-template-columns: 1fr 50px 80px 32px;
+}
+
 .site-rules-header {
   display: grid;
-  grid-template-columns: 1fr 50px 80px 32px;
   gap: 8px;
   padding-left: 0;
   padding-bottom: 4px;
@@ -662,11 +621,6 @@ button:focus-visible {
 }
 
 .row.site-rule {
-  display: grid;
-  grid-template-columns: 1fr 50px 80px 32px;
-  gap: 8px;
-  align-items: center;
-  padding-left: 0;
   position: relative;
   margin: 4px 0;
 }
@@ -895,14 +849,14 @@ button:focus-visible {
     width: 100%;
   }
 
-  .site-rules-header {
-    grid-template-columns: 1fr 50px 70px 32px;
-    padding-left: 0;
-    font-size: 11px;
-  }
-
+  .site-rules-header,
   .row.site-rule {
     grid-template-columns: 1fr 50px 70px 32px;
+  }
+
+  .site-rules-header {
+    padding-left: 0;
+    font-size: 11px;
   }
 
   .row.site-rule .ruleSpeed {

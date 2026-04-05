@@ -346,6 +346,100 @@ describe('EventManager', () => {
     expect(eventManager.fightCount).toBe(0);
   });
 
+  // User gesture window tests
+
+  it('should accept external speed change when user interaction preceded it', async () => {
+    const config = window.VSC.videoSpeedConfig;
+    await config.load();
+    config.settings.lastSpeed = 1.5;
+    config.settings.rememberSpeed = true;
+
+    const actionHandler = new window.VSC.ActionHandler(config, null);
+    const eventManager = new window.VSC.EventManager(config, actionHandler);
+
+    const mockVideo = createMockVideo({ playbackRate: 2.0 });
+    mockVideo.vsc = { div: document.createElement('div'), speedIndicator: { textContent: '1.50' } };
+    Object.defineProperty(mockVideo, 'readyState', { value: 4, configurable: true });
+
+    // Gesture at t=1000ms, ratechange at t=1050ms → delta=50ms < USER_GESTURE_WINDOW_MS(300ms)
+    eventManager.lastUserInteractionAt = 1000;
+
+    let eventStopped = false;
+    eventManager.handleRateChange({
+      composedPath: () => [mockVideo],
+      target: mockVideo,
+      detail: null,
+      timeStamp: 1050,
+      stopImmediatePropagation: () => {
+        eventStopped = true;
+      },
+    });
+
+    // Should accept: speed stays at 2.0, lastSpeed updated, fightCount reset
+    expect(mockVideo.playbackRate).toBe(2.0);
+    expect(config.settings.lastSpeed).toBe(2.0);
+    expect(eventManager.fightCount).toBe(0);
+    expect(eventManager.lastUserInteractionAt).toBe(0); // consumed
+    expect(eventStopped).toBe(true);
+  });
+
+  it('should fight back when external speed change has no preceding user gesture', async () => {
+    const config = window.VSC.videoSpeedConfig;
+    await config.load();
+    config.settings.lastSpeed = 1.5;
+
+    const actionHandler = new window.VSC.ActionHandler(config, null);
+    const eventManager = new window.VSC.EventManager(config, actionHandler);
+
+    const mockVideo = createMockVideo({ playbackRate: 1.0 });
+    mockVideo.vsc = { speedIndicator: { textContent: '1.50' } };
+    Object.defineProperty(mockVideo, 'readyState', { value: 4, configurable: true });
+
+    // Use fixed timestamps: gesture window is 300ms, so delta of 1000ms is clearly outside
+    eventManager.lastUserInteractionAt = 0;
+    let eventStopped = false;
+    eventManager.handleRateChange({
+      composedPath: () => [mockVideo],
+      target: mockVideo,
+      detail: null,
+      timeStamp: 1000, // 1000ms - 0ms = 1000ms >> 300ms window
+      stopImmediatePropagation: () => {
+        eventStopped = true;
+      },
+    });
+
+    // Should fight: speed restored to 1.5
+    expect(mockVideo.playbackRate).toBe(1.5);
+    expect(eventManager.fightCount).toBe(1);
+    expect(eventStopped).toBe(true);
+  });
+
+  it('should fight back when user gesture is outside the window', async () => {
+    const config = window.VSC.videoSpeedConfig;
+    await config.load();
+    config.settings.lastSpeed = 1.5;
+
+    const actionHandler = new window.VSC.ActionHandler(config, null);
+    const eventManager = new window.VSC.EventManager(config, actionHandler);
+
+    const mockVideo = createMockVideo({ playbackRate: 1.0 });
+    mockVideo.vsc = { speedIndicator: { textContent: '1.50' } };
+    Object.defineProperty(mockVideo, 'readyState', { value: 4, configurable: true });
+
+    // Gesture at t=100ms, ratechange at t=700ms → delta=600ms > USER_GESTURE_WINDOW_MS(300ms)
+    eventManager.lastUserInteractionAt = 100;
+    eventManager.handleRateChange({
+      composedPath: () => [mockVideo],
+      target: mockVideo,
+      detail: null,
+      timeStamp: 700,
+      stopImmediatePropagation: () => {},
+    });
+
+    expect(mockVideo.playbackRate).toBe(1.5); // fought back
+    expect(eventManager.fightCount).toBe(1);
+  });
+
   it('cleanup should clear fight detection state', async () => {
     const config = window.VSC.videoSpeedConfig;
     await config.load();

@@ -336,6 +336,50 @@ describe('EventManager Matching', () => {
     expect(actions.length).toBe(1);
   });
 
+  // Numpad key matching
+
+  it('Numpad: NumpadEnter binding fires correctly on NumpadEnter press', () => {
+    const { eventManager, actions } = setupEnv([
+      {
+        action: 'reset',
+        code: 'NumpadEnter',
+        key: 13,
+        keyCode: 13,
+        displayKey: 'Num Enter',
+        value: 1.0,
+        force: false,
+      },
+    ]);
+    eventManager.handleKeydown(
+      makeEvent({ code: 'NumpadEnter', key: 'Enter', keyCode: 13, timeStamp: 1400 })
+    );
+    expect(actions.length).toBe(1);
+    expect(actions[0].action).toBe('reset');
+  });
+
+  it('Numpad: Enter binding (code:"Enter") does NOT fire on NumpadEnter — keys are distinct, no coalesce', () => {
+    const { eventManager, actions } = setupEnv([
+      {
+        action: 'reset',
+        code: 'Enter',
+        key: 13,
+        keyCode: 13,
+        displayKey: 'Enter',
+        value: 1.0,
+        force: false,
+      },
+    ]);
+    eventManager.handleKeydown(
+      makeEvent({ code: 'NumpadEnter', key: 'Enter', keyCode: 13, timeStamp: 1500 })
+    );
+    expect(actions.length).toBe(0);
+  });
+
+  it('displayKeyFromCode: NumpadEnter → "Num Enter" (distinct from regular Enter)', () => {
+    expect(window.VSC.Constants.displayKeyFromCode('NumpadEnter')).toBe('Num Enter');
+    expect(window.VSC.Constants.displayKeyFromCode('Enter')).toBe('Enter');
+  });
+
   // Chord precedence
 
   it('Chord precedence: Ctrl+S chord fires instead of plain S binding', () => {

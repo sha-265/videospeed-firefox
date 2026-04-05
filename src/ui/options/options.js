@@ -418,7 +418,9 @@ function recordKeyPress(e) {
   // Capture v2 identity
   e.target.code = e.code;
   e.target.keyCode = e.keyCode;
-  e.target.displayKey = e.key;
+  // Use code-based display so keys with identical e.key are distinguishable
+  // (e.g. Enter vs NumpadEnter both produce e.key="Enter", but code differs).
+  e.target.displayKey = window.VSC.Constants.displayKeyFromCode(e.code) || e.key;
 
   // Capture modifiers — only store object if any modifier is active
   const hasMod = e.ctrlKey || e.altKey || e.shiftKey || e.metaKey;
@@ -432,7 +434,7 @@ function recordKeyPress(e) {
     : undefined;
 
   // Display formatted shortcut
-  e.target.value = formatShortcutDisplay(e.key, e.target.modifiers);
+  e.target.value = formatShortcutDisplay(e.target.displayKey, e.target.modifiers);
   autoSizeKeyInput(e.target);
 
   // Show contextual warnings for problematic modifier combos
